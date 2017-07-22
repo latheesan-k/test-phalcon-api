@@ -64,6 +64,35 @@ class Helper
     }
 
     /**
+     * Simple helper method to format bytes into human redable format
+     * @credits http://jeffreysambells.com/2012/10/25/human-readable-filesize-php
+     *
+     * @param $bytes
+     * @param int $decimals
+     * @return string
+     */
+    public static function bytesToReadable($bytes, $decimals = 2) {
+        $size = array('B','KB','MB','GB','TB','PB','EB','ZB','YB');
+        $factor = floor((strlen($bytes) - 1) / 3);
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
+    }
+
+    /**
+     * Method to generate web link relative to the application uri.
+     *
+     * @param $path
+     * @return string
+     */
+    public static function toLink($path)
+    {
+        // Parse server protocol
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
+
+        // Finished
+        return $protocol . $_SERVER['HTTP_HOST'] . '/' . $path;
+    }
+
+    /**
      * Method to handle file download request by id
      *
      * @param $file_id

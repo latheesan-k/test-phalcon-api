@@ -17,15 +17,15 @@
  *     HTTP/1.1 200 OK
  *     [
  *         {
- *             "id": 1,
+ *             "id":"1",
  *             "original_filename":"test.csv",
  *             "new_filename":"test.xls",
  *             "filesize":{
- *                  "bytes":1234,
- *                  "formatted":"0.12kb"
+ *                 "bytes":"8281",
+ *                 "formatted":"8.09KB"
  *             },
- *             "download_link":"http://site.local/download/1",
- *             "date_created":"2017-07-21"
+ *             "download_link":"http://app.local/download/1",
+ *             "date_created":"2017-07-22"
  *         }
  *     ]
  *
