@@ -18,7 +18,7 @@ include getcwd() . '/../app/bootstrap.php';
 // Create a new di to share resources across the application
 $di = new FactoryDefault();
 
-// Register route collection dynamically
+// Register route collections dynamically
 $di->set('collections', function () {
     return include(APP_DIR . 'routes/loader.php');
 });
@@ -29,12 +29,12 @@ $di->setShared('config', function() use ($config) {
 });
 $config = null;
 
-// Register singleton instance of session
+// Register singleton instance of session manager
 $di->setShared('session', function() {
     return (new \Phalcon\Session\Adapter\Files())->start();
 });
 
-// Register single instance of database adapter
+// Register single instance of database connection
 $di->setShared('db', function() use ($di) {
     $dbConfig = $di->get('config')->database;
     return Phalcon\Db\Adapter\Pdo\Factory::load([
@@ -47,7 +47,7 @@ $di->setShared('db', function() use ($di) {
     ]);
 });
 
-// Register singleton instance of the logger adapter
+// Register singleton instance of the logger
 $di->setShared('logger', function() {
     return Phalcon\Logger\Factory::load([
         'name' => APP_DIR . 'storage/logs/' . date('d-m-Y') . '_logs.txt',
