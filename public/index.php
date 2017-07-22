@@ -85,11 +85,30 @@ $app->get('/', function() use ($app) {
 // Post-process request request
 $app->after(function() use ($di, $start)
 {
-    // Log request
-    if ($di->get('config')->app->debug) {
-        $di->get('logger')->debug(sprintf("Processed request for %s in %f seconds.\r\n",
-            $_SERVER['REMOTE_ADDR'],
-            (microtime(true) - $start)));
+    // If debug enabled
+    if ($di->get('config')->app->debug)
+    {
+        // Parse request
+        $userIp = $_SERVER['REMOTE_ADDR'];
+        $executionTime = (microtime(true) - $start);
+        $requestUri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'N/A';
+        $requestMethod = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'N/A';
+        $requestBody = file_get_contents('php://input');
+        if (!$requestBody || empty($requestBody))
+            $requestBody = sizeof($_POST) ? print_r($_POST, true) : null;
+
+        // Log request
+        $logger = $di->get('logger');
+        $logger->begin();
+        $logger->debug(sprintf(
+            "Processed request for %s in %f seconds.\r\n" .
+            "Request Uri: %s\r\n" .
+            (!empty($requestBody) ? "Request Body: %s\r\n" : ''),
+                $userIp,
+                $executionTime,
+                $requestMethod ." ". $requestUri,
+                $requestBody));
+        $logger->commit();
     }
 });
 
