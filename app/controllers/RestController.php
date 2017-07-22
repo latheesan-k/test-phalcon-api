@@ -11,7 +11,6 @@ class RestController extends BaseController
     {
         // Construct parent
         parent::__construct();
-        return;
     }
 
     /**

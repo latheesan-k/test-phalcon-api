@@ -118,19 +118,29 @@ $app->after(function() use ($di, $start)
 
 // Global 404 error handler
 $app->notFound(function() {
-    throw new Exception('File not found.');
+    throw new TestPhalconApi\Exceptions\ApiException('File not found.', 404);
 });
 
 // Register global exception handler
 set_exception_handler(function($exception) use ($di)
 {
+    // Check if its an api exception
+    $isApiException = is_a($exception, 'TestPhalconApi\\Exceptions\\ApiException');
+
     // Log unhandled exception as an error
     $logger = $di->get('logger');
     $logger->begin();
-    $logger->error($exception->getMessage());
-    $logger->debug($exception->getFile() . ':' . $exception->getLine());
-    $logger->debug("StackTrace:\r\n" . $exception->getTraceAsString() . "\r\n");
+    $logger->error($isApiException ? $exception->getResponseCode() . ' ' . $exception->getErrorMessage() : $exception->getMessage());
+    if (!$isApiException) $logger->debug($exception->getFile() . ':' . $exception->getLine());
+    if (!$isApiException) $logger->debug("StackTrace:\r\n" . $exception->getTraceAsString() . "\r\n");
     $logger->commit();
+
+    // Send error response
+    return (new TestPhalconApi\Responses\JsonResponse())
+        ->sendError(
+            $exception->getErrorMessage(),
+            $isApiException ? $exception->getResponseCode() : 500
+        );
 });
 
 // Start handling api requests
