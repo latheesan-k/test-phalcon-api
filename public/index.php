@@ -30,6 +30,12 @@ $di->setShared('config', function() use ($config) {
 });
 $config = null;
 
+// Register application start time
+$di->setShared('start_time', function() use ($start) {
+    return new TestPhalconApi\Support\StartTime($start);
+});
+$start = null;
+
 // Register singleton instance of session manager
 $di->setShared('session', function() use ($di) {
     return Factory::load([
@@ -98,8 +104,8 @@ $app->get('/download/{file_id:[0-9]+}', function($file_id) {
 });
 
 // Post-process request request
-$app->after(function() use ($app, $start) {
-    TestPhalconApi\Support\Helper::logRequest($start);
+$app->after(function() use ($app) {
+    TestPhalconApi\Support\Helper::logRequest();
 });
 
 // Register global 404 error handler

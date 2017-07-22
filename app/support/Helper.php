@@ -6,10 +6,8 @@ class Helper
 {
     /**
      * Helper method to log request.
-     *
-     * @param $start
      */
-    public static function logRequest($start)
+    public static function logRequest()
     {
         // Check if debug logging is enabled
         if (!self::getDI('config')->app->debug)
@@ -17,7 +15,7 @@ class Helper
 
         // Parse request
         $userIp = $_SERVER['REMOTE_ADDR'];
-        $executionTime = (microtime(true) - $start);
+        $executionTime = (microtime(true) - self::getDI('start_time')->getValue());
         $requestUri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'N/A';
         $requestMethod = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'N/A';
         $requestBody = file_get_contents('php://input');
@@ -52,7 +50,7 @@ class Helper
         // Log unhandled exception as an error
         $logger = self::getDI('logger');
         $logger->begin();
-        $logger->error($isApiException ? $exception->getResponseCode() . ' ' . $exception->getErrorMessage() : $exception->getMessage());
+        $logger->error($isApiException ? $exception->getResponseCode() . ' ' . $exception->getErrorMessage() . "\r\n" : $exception->getMessage());
         if (!$isApiException) $logger->debug($exception->getFile() . ':' . $exception->getLine());
         if (!$isApiException) $logger->debug("StackTrace:\r\n" . $exception->getTraceAsString() . "\r\n");
         $logger->commit();
@@ -72,6 +70,9 @@ class Helper
      */
     public static function handleDownload($file_id)
     {
+        // Log request
+        self::logRequest();
+
         // TODO real implementation
         header("Content-Type: application/vnd.ms-excel");
         readfile(APP_DIR . 'storage/uploads/test.xls');
