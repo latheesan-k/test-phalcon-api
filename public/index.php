@@ -12,7 +12,8 @@ include getcwd() . '/../app/bootstrap.php';
     'TestPhalconApi\Models' => APP_DIR . '/models/',
     'TestPhalconApi\Controllers' => APP_DIR . '/controllers/',
     'TestPhalconApi\Exceptions' => APP_DIR . '/exceptions/',
-    'TestPhalconApi\Responses' => APP_DIR . '/responses/'
+    'TestPhalconApi\Responses' => APP_DIR . '/responses/',
+    'TestPhalconApi\Support' => APP_DIR . '/support/'
 ])->register();
 
 // Create a new di to share resources across the application
@@ -87,60 +88,21 @@ $app->get('/', function() use ($app) {
 });
 
 // Post-process request request
-$app->after(function() use ($di, $start)
+$app->after(function() use ($start)
 {
-    // If debug enabled
-    if ($di->get('config')->app->debug)
-    {
-        // Parse request
-        $userIp = $_SERVER['REMOTE_ADDR'];
-        $executionTime = (microtime(true) - $start);
-        $requestUri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'N/A';
-        $requestMethod = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'N/A';
-        $requestBody = file_get_contents('php://input');
-        if (!$requestBody || empty($requestBody))
-            $requestBody = sizeof($_POST) ? print_r($_POST, true) : null;
-
-        // Log request
-        $logger = $di->get('logger');
-        $logger->begin();
-        $logger->debug(sprintf(
-            "Processed request for %s in %f seconds.\r\n" .
-            "Request Uri: %s\r\n" .
-            (!empty($requestBody) ? "Request Body: %s\r\n" : ''),
-                $userIp,
-                $executionTime,
-                $requestMethod ." ". $requestUri,
-                $requestBody));
-        $logger->commit();
-    }
+    // Log the request
+    TestPhalconApi\Support\Helper::logRequest($start);
 });
 
-// Global 404 error handler
+// Register global 404 error handler
 $app->notFound(function() {
-    throw new TestPhalconApi\Exceptions\ApiException('File not found.', 404);
+    throw new TestPhalconApi\Exceptions\ApiException(
+        'File not found. ' . (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'N/A'), 404);
 });
 
 // Register global exception handler
-set_exception_handler(function($exception) use ($di)
-{
-    // Check if its an api exception
-    $isApiException = is_a($exception, 'TestPhalconApi\\Exceptions\\ApiException');
-
-    // Log unhandled exception as an error
-    $logger = $di->get('logger');
-    $logger->begin();
-    $logger->error($isApiException ? $exception->getResponseCode() . ' ' . $exception->getErrorMessage() : $exception->getMessage());
-    if (!$isApiException) $logger->debug($exception->getFile() . ':' . $exception->getLine());
-    if (!$isApiException) $logger->debug("StackTrace:\r\n" . $exception->getTraceAsString() . "\r\n");
-    $logger->commit();
-
-    // Send error response
-    return (new TestPhalconApi\Responses\JsonResponse())
-        ->sendError(
-            $exception->getErrorMessage(),
-            $isApiException ? $exception->getResponseCode() : 500
-        );
+set_exception_handler(function($exception) {
+    return TestPhalconApi\Support\Helper::handleException($exception);
 });
 
 // Start handling api requests
