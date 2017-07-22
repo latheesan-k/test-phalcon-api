@@ -30,8 +30,12 @@ $di->setShared('config', function() use ($config) {
 $config = null;
 
 // Register singleton instance of session manager
-$di->setShared('session', function() {
-    return (new \Phalcon\Session\Adapter\Files())->start();
+$di->setShared('session', function() use ($di) {
+    return Factory::load([
+        'lifetime'   => $di->get('config')->app->session_lifetime,
+        'prefix'     => 'tpa_',
+        'adapter'    => 'file'
+    ]);
 });
 
 // Register single instance of database connection

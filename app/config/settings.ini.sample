@@ -1,6 +1,7 @@
 [app]
 debug = true
 timezone = Europe/london
+session_lifetime = 3600
 cache_lifetime = 3600
 
 [database]
