@@ -3,6 +3,9 @@
 // Load required namespaces
 use Phalcon\Config\Adapter\Ini;
 
+// Record application start time
+$start = microtime(true);
+
 // Define application directory globally
 define('APP_DIR', getcwd() . '/../app/');
 

@@ -47,15 +47,26 @@ $di->setShared('db', function() use ($di) {
     ]);
 });
 
-// Register cache functionality
-$di->set('cache', function() use ($di) {
-    $frontendCache = new \Phalcon\Cache\Frontend\Data([
-        'lifetime' => $di->get('config')->app->cache_lifetime
+// Register singleton instance of the logger adapter
+$di->setShared('logger', function() {
+    return Phalcon\Logger\Factory::load([
+        'name' => APP_DIR . 'storage/logs/' . date('d-m-Y') . '_logs.txt',
+        'adapter' => 'file'
     ]);
-    $cache = new \Phalcon\Cache\Backend\File($frontendCache, [
-        'cacheDir' => APP_DIR . 'storage/cache/'
+});
+
+// Register singleton instance of the caching functionality
+$di->setShared('cache', function() use ($di) {
+    $frontendCache = Phalcon\Cache\Frontend\Factory::load([
+        'lifetime' => $di->get('config')->app->cache_lifetime,
+        'adapter'  => 'data'
     ]);
-    return $cache;
+    return Phalcon\Cache\Backend\Factory::load([
+        'cacheDir' => APP_DIR . 'storage/cache/',
+        'prefix'  => 'app-data',
+        'frontend' => $frontendCache,
+        'adapter' => 'file'
+    ]);
 });
 
 // Create our micro Phalcon application
@@ -69,6 +80,34 @@ foreach ($di->get('collections') as $collection)
 // Base api end point page
 $app->get('/', function() use ($di) {
     include(APP_DIR . 'home.php');
+});
+
+// Post-process request request
+$app->after(function() use ($di, $start)
+{
+    // Log request
+    if ($di->get('config')->app->debug) {
+        $di->get('logger')->debug(sprintf("Processed request for %s in %f seconds.\r\n",
+            $_SERVER['REMOTE_ADDR'],
+            (microtime(true) - $start)));
+    }
+});
+
+// Global 404 error handler
+$app->notFound(function() {
+    throw new Exception('File not found.');
+});
+
+// Register global exception handler
+set_exception_handler(function($exception) use ($di)
+{
+    // Log unhandled exception as an error
+    $logger = $di->get('logger');
+    $logger->begin();
+    $logger->error($exception->getMessage());
+    $logger->debug($exception->getFile() . ':' . $exception->getLine());
+    $logger->debug("StackTrace:\r\n" . $exception->getTraceAsString() . "\r\n");
+    $logger->commit();
 });
 
 // Start handling api requests
