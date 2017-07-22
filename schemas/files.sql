@@ -22,5 +22,7 @@ ALTER TABLE `files`
 ALTER TABLE `files`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+INSERT INTO `files` (`id`, `original_filename`, `new_filename`, `filesize`, `date_created`) VALUES
+  (NULL, 'test.csv', 'test.xls', '8281', '2017-07-22');
 
 COMMIT;

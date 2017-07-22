@@ -88,8 +88,13 @@ foreach ($di->get('collections') as $collection)
     $app->mount($collection);
 
 // Show API documentation page by default
-$app->get('/', function() use ($app) {
+$app->get('/', function() {
     return (new Phalcon\Http\Response())->redirect('docs/html');
+});
+
+// Handle file download request
+$app->get('/download/{file_id:[0-9]+}', function($file_id) {
+    return TestPhalconApi\Support\Helper::handleDownload($file_id);
 });
 
 // Post-process request request

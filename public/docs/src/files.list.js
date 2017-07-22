@@ -24,7 +24,7 @@
  *                  "bytes":1234,
  *                  "formatted":"0.12kb"
  *             },
- *             "download_link":"http://site.local/downloads/test.xls",
+ *             "download_link":"http://site.local/download/1",
  *             "date_created":"2017-07-21"
  *         }
  *     ]

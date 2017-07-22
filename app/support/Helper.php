@@ -66,6 +66,19 @@ class Helper
     }
 
     /**
+     * Method to handle file download request by id
+     *
+     * @param $file_id
+     */
+    public static function handleDownload($file_id)
+    {
+        // TODO real implementation
+        header("Content-Type: application/vnd.ms-excel");
+        readfile(APP_DIR . 'storage/uploads/test.xls');
+        exit;
+    }
+
+    /**
      * Internal helper method to retrieve default di.
      *
      * @param $type
