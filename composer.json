@@ -1,9 +1,0 @@
-{
-    "require":{
-        "php":">=5.6.0",
-        "ext-phalcon":">=3"
-    },
-    "require-dev":{
-        "phalcon/devtools":"3.*.*@dev"
-    }
-}

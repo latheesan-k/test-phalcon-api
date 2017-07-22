@@ -77,9 +77,9 @@ $app->setDI($di);
 foreach ($di->get('collections') as $collection)
     $app->mount($collection);
 
-// Base api end point page
-$app->get('/', function() use ($di) {
-    include(APP_DIR . 'home.php');
+// Show API documentation page by default
+$app->get('/', function() use ($app) {
+    return (new Phalcon\Http\Response())->redirect('docs/html');
 });
 
 // Post-process request request

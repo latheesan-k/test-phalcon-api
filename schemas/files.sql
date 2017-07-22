@@ -7,9 +7,10 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `files`;
 CREATE TABLE `files` (
   `id` int(11) NOT NULL,
-  `filename` varchar(255) NOT NULL,
-  `filesize` int(11) NOT NULL,
-  `date_created` int(11) NOT NULL
+  `original_filename` varchar(255) NOT NULL,
+  `new_filename` varchar(255) NOT NULL,
+  `filesize_bytes` int(11) NOT NULL,
+  `date_created` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

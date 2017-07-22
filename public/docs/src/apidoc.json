@@ -1,0 +1,16 @@
+{
+    "name": "test-phalcon-api",
+    "version": "0.0.1",
+    "title": "Test Phalcon Api",
+    "description": "Test api service built on phalcon php framework v3. Developed by Latheesan Kanesamoorthy. https://github.com/latheesan-k/test-phalcon-api",
+    "url" : "/api/v1",
+    "header": {
+        "title": "Test Phalcon Api"
+    },
+    "order": [
+    ],
+    "template": {
+        "withCompare": true,
+        "withGenerator": true
+    }
+}

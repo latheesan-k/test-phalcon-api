@@ -2,7 +2,6 @@
 debug = true
 timezone = Europe/london
 cache_lifetime = 3600
-version = v1.0.0
 
 [database]
 adapter = mysql
