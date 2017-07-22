@@ -7,7 +7,10 @@ class FilesController extends RestController
     public function getList()
     {
         // TODO
-        echo 'file list';
+        return $this->di->get('json_response')
+            ->sendSuccess([
+                ['test' => true]
+            ]);
     }
 
     public function getInfo()

@@ -58,7 +58,7 @@ class Helper
         $logger->commit();
 
         // Send error response
-        return (new \TestPhalconApi\Responses\JsonResponse())
+        return self::getDI('json_response')
             ->sendError(
                 $exception->getErrorMessage(),
                 $isApiException ? $exception->getResponseCode() : 500

@@ -60,6 +60,11 @@ $di->setShared('logger', function() {
     ]);
 });
 
+// Register singleton instance of the json responder
+$di->setShared('json_response', function() {
+    return new TestPhalconApi\Responses\JsonResponse();
+});
+
 // Register singleton instance of the caching functionality
 $di->setShared('cache', function() use ($di) {
     $frontendCache = Phalcon\Cache\Frontend\Factory::load([
@@ -88,9 +93,7 @@ $app->get('/', function() use ($app) {
 });
 
 // Post-process request request
-$app->after(function() use ($start)
-{
-    // Log the request
+$app->after(function() use ($app, $start) {
     TestPhalconApi\Support\Helper::logRequest($start);
 });
 

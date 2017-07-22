@@ -2,15 +2,15 @@
 
 namespace TestPhalconApi\Controllers;
 
-class RestController extends BaseController
+class RestController extends \Phalcon\DI\Injectable
 {
     /**
      * RestController constructor.
      */
     public function __construct()
     {
-        // Construct parent
-        parent::__construct();
+        // Load default di
+        $this->setDI(\Phalcon\DI::getDefault());
     }
 
     /**
