@@ -4,39 +4,25 @@ namespace TestPhalconApi\Exceptions;
 
 class ApiException extends \Exception
 {
-    /**
-     * Class properties.
-     *
-     * @var string
-     */
-    public $errorMessage;
-    public $responseCode;
+    private $status_code = null;
 
     /**
      * ApiException constructor.
      *
-     * @param string $errorMessage
-     * @param int $responseCode
+     * @param string $message
+     * @param int $status_code
      */
-    public function __construct($errorMessage = "Unknown error occurred", $responseCode = 500)
+    public function __construct($message = "Unknown Error", $status_code = 500)
     {
-        $this->errorMessage = $errorMessage;
-        $this->responseCode = $responseCode;
-    }
-
-    /**
-     * @return string
-     */
-    public function getErrorMessage()
-    {
-        return $this->errorMessage;
+        parent::__construct($message);
+        $this->status_code = $status_code;
     }
 
     /**
      * @return mixed
      */
-    public function getResponseCode()
+    public function getStatusCode()
     {
-        return $this->responseCode;
+        return $this->status_code;
     }
 }

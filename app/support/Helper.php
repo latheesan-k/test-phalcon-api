@@ -39,28 +39,34 @@ class Helper
     /**
      * Method to log the exception and send it as json response to client.
      *
-     * @param \Exception $exception
+     * @param $exception
      * @return mixed
      */
-    public static function handleException(\Exception $exception)
+    public static function handleException($exception)
     {
-        // Check if its an api exception
-        $isApiException = is_a($exception, 'TestPhalconApi\\Exceptions\\ApiException');
-
         // Log unhandled exception as an error
         $logger = self::getDI('logger');
         $logger->begin();
-        $logger->error($isApiException ? $exception->getResponseCode() . ' ' . $exception->getErrorMessage() . "\r\n" : $exception->getMessage());
-        if (!$isApiException) $logger->debug($exception->getFile() . ':' . $exception->getLine());
-        if (!$isApiException) $logger->debug("StackTrace:\r\n" . $exception->getTraceAsString() . "\r\n");
+        $logger->error($exception->getMessage());
+        $logger->debug($exception->getFile() . ':' . $exception->getLine());
+        $logger->debug("StackTrace:\r\n" . $exception->getTraceAsString() . "\r\n");
         $logger->commit();
+
+        // Parse status code
+        $statusCode = 500;
+        if (is_a($exception, 'TestPhalconApi\\Exceptions\\ApiException')) {
+            $statusCode = $exception->getStatusCode();
+        }
+
+        // Parse error message
+        $errorMessage = $exception->getMessage();
+        if (self::getDI('config')->app->debug) {
+            $errorMessage .= ' @ ' . basename($exception->getFile()) . ':' . $exception->getLine();
+        }
 
         // Send error response
         return self::getDI('json_response')
-            ->sendError(
-                $exception->getErrorMessage(),
-                $isApiException ? $exception->getResponseCode() : 500
-            );
+            ->sendError($errorMessage, $statusCode);
     }
 
     /**

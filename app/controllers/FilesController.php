@@ -2,8 +2,9 @@
 
 namespace TestPhalconApi\Controllers;
 
-use \TestPhalconApi\Models\UploadFile;
-use \TestPhalconApi\Support\Helper;
+use TestPhalconApi\Support\Helper;
+use TestPhalconApi\Models\UploadFile;
+use TestPhalconApi\Exceptions\ApiException;
 
 class FilesController extends RestController
 {
@@ -14,23 +15,67 @@ class FilesController extends RestController
      */
     public function getList()
     {
-        // Load all upload files
-        $uploadFiles = UploadFile::find();
+        // Init
+        $cache = $this->di->get('cache');
+        $cacheKey = "upload_files";
 
-        // Parse & build results
-        $results = [];
-        foreach ($uploadFiles as $uploadFile)
-            $results[] = $this->transform($uploadFile);
+        // Load record from cache
+        $uploadFiles = $cache->get($cacheKey);
+
+        // If no cache is present
+        if (!$uploadFiles)
+        {
+            // Load all upload files
+            $results = UploadFile::find();
+
+            // Parse & build results
+            $uploadFiles = [];
+            foreach ($results as $result)
+                $uploadFiles[] = $this->transform($result);
+
+            // Cache results
+            $cache->save($cacheKey, $uploadFiles);
+        }
 
         // Finished
         return $this->di->get('json_response')
-            ->sendSuccess($results);
+            ->sendSuccess($uploadFiles);
     }
 
-    public function getInfo()
+    /**
+     * Method to load single upload file info by id.
+     *
+     * @param $upload_file_id
+     * @return mixed
+     * @throws ApiException
+     */
+    public function getInfo($upload_file_id)
     {
-        // TODO
-        echo 'file info';
+        // Init
+        $cache = $this->di->get('cache');
+        $cacheKey = "upload_file_$upload_file_id";
+
+        // Load record from cache
+        $uploadFile = $cache->get($cacheKey);
+
+        // If no cache is present
+        if (!$uploadFile)
+        {
+            // Load requested upload file
+            $uploadFile = UploadFile::findFirst($upload_file_id);
+            if (!$uploadFile)
+                throw new ApiException('Upload File does not exist.', 404);
+
+            // Transform record
+            $uploadFile = $this->transform($uploadFile);
+
+            // Cache result
+            $cache->save($cacheKey, $uploadFile);
+        }
+
+        // Finished
+        return $this->di->get('json_response')
+            ->sendSuccess($uploadFile);
     }
 
     public function createRecord()
