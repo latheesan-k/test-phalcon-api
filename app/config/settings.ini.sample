@@ -2,7 +2,6 @@
 debug = true
 timezone = Europe/london
 session_lifetime = 3600
-cache_lifetime = 3600
 
 [database]
 adapter = mysql
@@ -11,3 +10,13 @@ port = 3306
 username = test-phalcon-api
 password = 123456
 dbname = test-phalcon-api
+
+[cache]
+frontend_dapter = data
+backend_adapter = file
+lifetime = 3600
+prefix = tpa_
+
+[logger]
+adapter = file
+date_format = d-m-y

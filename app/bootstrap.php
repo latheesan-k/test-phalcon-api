@@ -4,6 +4,12 @@
 use Phalcon\Loader;
 use Phalcon\DI\FactoryDefault;
 use Phalcon\Config\Adapter\Ini;
+use TestPhalconApi\Support\StartTime;
+use Phalcon\Logger\Factory as Logger;
+use TestPhalconApi\Responses\JsonResponse;
+use Phalcon\Db\Adapter\Pdo\Factory as PdoFactory;
+use Phalcon\Cache\Frontend\Factory as FrontendCache;
+use Phalcon\Cache\Backend\Factory as BackendCache;
 
 // Record application start time
 $start = microtime(true);
@@ -33,35 +39,26 @@ date_default_timezone_set($config->app->timezone);
 $di = new FactoryDefault();
 
 // Register route collections dynamically
-$di->set('collections', function () {
+$di->set('collections', function() {
     return include(APP_DIR . 'routes/loader.php');
 });
 
 // Register singleton instance of the loaded config object
-$di->setShared('config', function() use ($config) {
+$di->setShared('config', function() use($config) {
     return $config;
 });
 $config = null;
 
 // Register application start time
-$di->setShared('start_time', function() use ($start) {
-    return new TestPhalconApi\Support\StartTime($start);
+$di->setShared('start_time', function() use($start) {
+    return new StartTime($start);
 });
 $start = null;
 
-// Register singleton instance of session manager
-$di->setShared('session', function() use ($di) {
-    return Factory::load([
-        'lifetime'   => $di->get('config')->app->session_lifetime,
-        'prefix'     => 'tpa_',
-        'adapter'    => 'file'
-    ]);
-});
-
 // Register single instance of database connection
-$di->setShared('db', function() use ($di) {
+$di->setShared('db', function() use($di) {
     $dbConfig = $di->get('config')->database;
-    return Phalcon\Db\Adapter\Pdo\Factory::load([
+    return PdoFactory::load([
         'adapter'  => $dbConfig->adapter,
         'host' => $dbConfig->host,
         'port' => $dbConfig->port,
@@ -71,29 +68,31 @@ $di->setShared('db', function() use ($di) {
     ]);
 });
 
+// Register singleton instance of the caching functionality
+$di->setShared('cache', function() use($di) {
+    $cacheConfig = $di->get('config')->cache;
+    $frontendCache = FrontendCache::load([
+        'lifetime' => $cacheConfig->lifetime,
+        'adapter'  => $cacheConfig->frontend_dapter
+    ]);
+    return BackendCache::load([
+        'cacheDir' => APP_DIR . 'storage/cache/',
+        'prefix'  => $cacheConfig->prefix,
+        'frontend' => $frontendCache,
+        'adapter' => $cacheConfig->backend_adapter
+    ]);
+});
+
 // Register singleton instance of the logger
-$di->setShared('logger', function() {
-    return Phalcon\Logger\Factory::load([
-        'name' => APP_DIR . 'storage/logs/' . date('d-m-Y') . '_logs.txt',
-        'adapter' => 'file'
+$di->setShared('logger', function() use($di) {
+    $loggerConfig = $di->get('config')->logger;
+    return Logger::load([
+        'name' => APP_DIR . 'storage/logs/' . date($loggerConfig->date_format) . '.txt',
+        'adapter' => $loggerConfig->adapter
     ]);
 });
 
 // Register singleton instance of the json responder
 $di->setShared('json_response', function() {
-    return new TestPhalconApi\Responses\JsonResponse();
-});
-
-// Register singleton instance of the caching functionality
-$di->setShared('cache', function() use ($di) {
-    $frontendCache = Phalcon\Cache\Frontend\Factory::load([
-        'lifetime' => $di->get('config')->app->cache_lifetime,
-        'adapter'  => 'data'
-    ]);
-    return Phalcon\Cache\Backend\Factory::load([
-        'cacheDir' => APP_DIR . 'storage/cache/',
-        'prefix'  => 'tpa-',
-        'frontend' => $frontendCache,
-        'adapter' => 'file'
-    ]);
+    return new JsonResponse();
 });
