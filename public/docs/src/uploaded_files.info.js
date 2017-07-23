@@ -1,7 +1,8 @@
 /**
- * @api {get} /files List
+ * @api {get} /files/:uploaded_file_id Info
+ * @apiParam {Number} uploaded_file_id Uploaded File unique ID
  * @apiVersion 0.0.1
- * @apiName List
+ * @apiName Info
  * @apiGroup Files
  *
  * @apiSuccess (200) {String} id Unique record identifier
@@ -15,19 +16,25 @@
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
- *     [
- *         {
- *             "id":"1",
- *             "original_filename":"test.csv",
- *             "new_filename":"test.xls",
- *             "filesize":{
- *                 "bytes":"8281",
- *                 "formatted":"8.09KB"
- *             },
- *             "download_link":"http://app.local/download/1",
- *             "date_created":"2017-07-22"
- *         }
- *     ]
+ *     {
+ *         "id":"1",
+ *         "original_filename":"test.csv",
+ *         "new_filename":"test.xls",
+ *         "filesize":{
+ *             "bytes":"8281",
+ *             "formatted":"8.09KB"
+ *         },
+ *         "download_link":"http://app.local/download/test.xls",
+ *         "date_created":"2017-07-22"
+ *     }
+ *
+ * @apiError (404) {String} error Information about the error
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Internal Server Error
+ *     {
+ *         "error": "File not found."
+ *     }
  *
  * @apiError (500) {String} error Information about the error
  *

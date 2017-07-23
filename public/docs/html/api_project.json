@@ -7,7 +7,11 @@
   "header": {
     "title": "Test Phalcon Api"
   },
-  "order": [],
+  "order": [
+    "List",
+    "Info",
+    "Create"
+  ],
   "template": {
     "withCompare": true,
     "withGenerator": true
@@ -17,7 +21,7 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-07-22T21:55:26.135Z",
+    "time": "2017-07-23T23:29:10.364Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }
