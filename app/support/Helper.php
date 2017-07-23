@@ -95,7 +95,8 @@ class Helper
     public static function toLink($path)
     {
         // Parse server protocol
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
+        $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443);
+        $protocol = 'http' . ($isSecure ? 's' : '') . '://';
 
         // Finished
         return $protocol . $_SERVER['HTTP_HOST'] . '/' . $path;
@@ -117,14 +118,12 @@ class Helper
         self::logRequest();
 
         // Load requested upload file
-        $uploadFile = UploadFile::findFirst(
-            [
-                'new_filename = :filename:',
-                'bind' => [
-                    'filename' => $filename
-                ]
+        $uploadFile = UploadFile::findFirst([
+            'new_filename = :filename:',
+            'bind' => [
+                'filename' => $filename
             ]
-        );
+        ]);
         if (!$uploadFile)
             throw new ApiException('Upload File does not exist.', 404);
 

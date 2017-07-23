@@ -5,6 +5,8 @@ namespace TestPhalconApi\Support;
 class StartTime
 {
     /**
+     * Application start time.
+     *
      * @var float
      */
     private $value = 0.00;
@@ -19,6 +21,8 @@ class StartTime
     }
 
     /**
+     * Method to retrieve application start time.
+     *
      * @return mixed
      */
     public function getValue()

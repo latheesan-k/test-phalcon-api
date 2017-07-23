@@ -1,6 +1,5 @@
 <?php
 
-// Load required namespaces
 use Phalcon\Loader;
 use Phalcon\DI\FactoryDefault;
 use Phalcon\Config\Adapter\Ini;

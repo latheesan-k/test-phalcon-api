@@ -15,7 +15,7 @@ use \PHPExcel_CachedObjectStorageFactory;
 class UploadFilesController extends RestController
 {
     /**
-     * Method to load a list of uploaded files list
+     * Method to load a list of uploaded files list.
      *
      * @return mixed
      */
