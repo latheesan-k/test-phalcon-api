@@ -24,6 +24,9 @@ if (!file_exists($configFile))
 $config = new Ini($configFile);
 
 // Configure application defaults
+error_reporting(E_ALL);
+ini_set('display_errors', $config->app->debug);
+ini_set('display_startup_errors', $config->app->debug);
 date_default_timezone_set($config->app->timezone);
 
 // Register custom namespaces

@@ -1,0 +1,5 @@
+{
+    "require": {
+        "phpexcel/phpexcel": "^1.7"
+    }
+}

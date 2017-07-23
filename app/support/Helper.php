@@ -2,6 +2,9 @@
 
 namespace TestPhalconApi\Support;
 
+use TestPhalconApi\Models\UploadFile;
+use TestPhalconApi\Exceptions\ApiException;
+
 class Helper
 {
     /**
@@ -32,7 +35,7 @@ class Helper
             $userIp,
             $executionTime,
             $requestMethod ." ". $requestUri,
-            $requestBody));
+            trim($requestBody)));
         $logger->commit();
     }
 
@@ -101,16 +104,42 @@ class Helper
     /**
      * Method to handle file download request by id
      *
-     * @param $file_id
+     * @param $filename
+     * @throws ApiException
      */
-    public static function handleDownload($file_id)
+    public static function handleDownload($filename)
     {
+        // Validate file name
+        if (!preg_match(self::getDI('config')->app->valid_filename_regex, $filename))
+            throw new ApiException('Invalid file name: ' . $filename);
+
         // Log request
         self::logRequest();
 
-        // TODO real implementation
-        header("Content-Type: application/vnd.ms-excel");
-        readfile(APP_DIR . 'storage/uploads/test.xls');
+        // Load requested upload file
+        $uploadFile = UploadFile::findFirst(
+            [
+                'new_filename = :filename:',
+                'bind' => [
+                    'filename' => $filename
+                ]
+            ]
+        );
+        if (!$uploadFile)
+            throw new ApiException('Upload File does not exist.', 404);
+
+        // Generate local file path
+        $localFilepath = APP_DIR . 'storage/uploads/'. $uploadFile->new_filename;
+
+        // Check if local file exist
+        if (!file_exists($localFilepath))
+            throw new ApiException('Requested file does not exist on the server. It might be deleted.');
+
+        // Send file to user
+        header('Content-Disposition: attachment; filename="' . $uploadFile->new_filename . '"');
+        header('Content-Length: ' . $uploadFile->filesize_bytes);
+        header('Content-Type: application/vnd.ms-excel');
+        readfile($localFilepath);
         exit;
     }
 
@@ -120,7 +149,7 @@ class Helper
      * @param $type
      * @return mixed
      */
-    private function getDI($type)
+    private static function getDI($type)
     {
         return \Phalcon\DI::getDefault()->get($type);
     }

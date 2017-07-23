@@ -17,8 +17,8 @@ $app->get('/', function() {
 });
 
 // Handle file download request
-$app->get('/download/{upload_file_id:[0-9]+}', function($upload_file_id) {
-    return TestPhalconApi\Support\Helper::handleDownload($upload_file_id);
+$app->get('/download/{filename}', function($filename) {
+    return TestPhalconApi\Support\Helper::handleDownload($filename);
 });
 
 // Post-process request request

@@ -11,7 +11,7 @@ return call_user_func(function()
     // Configure route collection
     $filesCollection
         ->setPrefix('/api/v1/files')
-        ->setHandler('\TestPhalconApi\Controllers\FilesController')
+        ->setHandler('\TestPhalconApi\Controllers\UploadFilesController')
         ->setLazy(true);
 
     // Configure access control headers
@@ -19,9 +19,9 @@ return call_user_func(function()
     $filesCollection->options('/{upload_file_id}', 'recordEndpoint');
 
     // Configure routes
-    $filesCollection->get('/', 'getList');              // List files
-    $filesCollection->get('/{file_id:[0-9]+}', 'getInfo');   // Load a single file info
-    $filesCollection->post('/', 'createRecord');        // Create a new file
+    $filesCollection->get('/', 'getList');                  // List files
+    $filesCollection->get('/{file_id:[0-9]+}', 'getInfo');  // Load a single file info
+    $filesCollection->post('/', 'createRecord');            // Create a new file
 
     // Finished
     return $filesCollection;
