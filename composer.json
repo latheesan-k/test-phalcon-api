@@ -1,5 +1,38 @@
 {
+    "name": "latheesan-k/test-phalcon-api",
+    "type": "project",
+    "description": "Test api service built on phalcon php framework v3.",
+    "keywords": [
+        "codeception",
+        "phalcon",
+        "demo",
+        "api",
+        "rest",
+        "latheesan",
+        "kanesamoorthy",
+        "test-phalcon-api"
+    ],
+    "homepage": "https://github.com/latheesan-k/test-phalcon-api",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Latheesan Kanesamoorthy",
+            "email": "latheesan_k@hotmail.com",
+            "homepage": "https://stackoverflow.com/users/2332336/latheesan"
+        }
+    ],
     "require": {
-        "phpexcel/phpexcel": "^1.7"
+        "php": ">=5.4",
+        "ext-phalcon": ">=2.0.9",
+        "phpoffice/phpexcel": "^1.8"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "~2.7",
+        "codeception/codeception": "~2.2"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Test\\Unit\\": "tests/unit/"
+        }
     }
 }

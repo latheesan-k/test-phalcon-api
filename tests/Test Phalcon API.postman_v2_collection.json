@@ -1,0 +1,60 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Test Phalcon API",
+		"_postman_id": "921d4e62-caf9-c45d-3006-f85017ef6d8b",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Upload File",
+			"request": {
+				"url": "http://test-phalcon-api.local/api/v1/files",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "filename",
+							"value": "This is a test upload 1.csv",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "filedata",
+							"value": "id,name,age\n1,latheesan,29\n2,test,33",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Example of how to upload a csv file."
+			},
+			"response": []
+		},
+		{
+			"name": "List Files",
+			"request": {
+				"url": "http://test-phalcon-api.local/api/v1/files",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Example of how to list all the uploaded files."
+			},
+			"response": []
+		},
+		{
+			"name": "File Info",
+			"request": {
+				"url": "http://test-phalcon-api.local/api/v1/files/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Example of how to load a single file info."
+			},
+			"response": []
+		}
+	]
+}

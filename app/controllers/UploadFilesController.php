@@ -175,7 +175,7 @@ class UploadFilesController extends RestController
         $csvConfig = $this->di->get('config')->csv;
 
         // Load phpexcel
-        require_once APP_DIR . '../vendor/phpexcel/phpexcel/Classes/PHPExcel.php';
+        require_once APP_DIR . '../vendor/phpoffice/phpexcel/Classes/PHPExcel.php';
 
         // Configure caching rule
         $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
