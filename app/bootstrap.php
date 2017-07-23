@@ -86,11 +86,20 @@ $di->setShared('cache', function() use($di) {
     ]);
 });
 
-// Register singleton instance of the logger
-$di->setShared('logger', function() use($di) {
+// Register singleton instance of the debug logger
+$di->setShared('debug_logger', function() use($di) {
     $loggerConfig = $di->get('config')->logger;
     return Logger::load([
-        'name' => APP_DIR . 'storage/logs/' . date($loggerConfig->date_format) . '.txt',
+        'name' => APP_DIR . 'storage/logs/debug/' . date($loggerConfig->date_format) . '.txt',
+        'adapter' => $loggerConfig->adapter
+    ]);
+});
+
+// Register singleton instance of the error logger
+$di->setShared('error_logger', function() use($di) {
+    $loggerConfig = $di->get('config')->logger;
+    return Logger::load([
+        'name' => APP_DIR . 'storage/logs/errors/' . date($loggerConfig->date_format) . '.txt',
         'adapter' => $loggerConfig->adapter
     ]);
 });

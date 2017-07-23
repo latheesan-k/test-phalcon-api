@@ -26,7 +26,7 @@ class Helper
             $requestBody = sizeof($_POST) ? print_r($_POST, true) : null;
 
         // Log request
-        $logger = self::getDI('logger');
+        $logger = self::getDI('debug_logger');
         $logger->begin();
         $logger->debug(sprintf(
             "Processed request for %s in %f seconds.\r\n" .
@@ -48,7 +48,7 @@ class Helper
     public static function handleException($exception)
     {
         // Log unhandled exception as an error
-        $logger = self::getDI('logger');
+        $logger = self::getDI('error_logger');
         $logger->begin();
         $logger->error($exception->getMessage());
         $logger->debug($exception->getFile() . ':' . $exception->getLine());
