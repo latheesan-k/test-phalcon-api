@@ -29,7 +29,7 @@ There are additional routes defined also:
 First you need to clone this repository:
 
 ```sh
-git clone https://github.com/latheesan-k/test-phalcon-api.git
+git clone https://github.com/latheesan-k/test-phalcon-api.git test-phalcon-api.local
 ```
 
 Install composer in a common location or in your project:
@@ -63,7 +63,7 @@ mysql -u root -p test-phalcon-api < schemas/upload_files.sql
 First copy the sample settings file
 
 ```sh
-cp app/config/settings.ini.sample settings.ini
+cp app/config/settings.ini.sample app/config/settings.ini
 ```
 
 Then update the `app/config/settings.ini` with your server details.
@@ -81,7 +81,7 @@ Here is how you can quickly setup a vhost entry for your apache2 to serve this p
 
 * Don't forget to enable `mod_rewrite` in your apache2 server
 
-#### 5. Test your api
+#### 5. API usage guide
 
 > API documentation can be read by visiting [http://test-phalcon-api.local/public/docs/html/][8]
 
@@ -102,7 +102,7 @@ See api [docs][8] for more detail.
 First copy the sample settings file
 
 ```sh
-cp tests/_config/settings.ini.sample settings.ini
+cp tests/_config/settings.ini.sample tests/_config/settings.ini
 ```
 
 Then update the `tests/_config/settings.ini` with your test server details.
