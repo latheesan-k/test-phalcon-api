@@ -23,8 +23,8 @@ define('APP_DIR', $isTest
 
 // Attempt to load application configuration
 $configFile = $isTest
-    ? APP_DIR . 'config/settings.ini'
-    : TESTS_PATH . 'config/settings.ini';
+    ? TESTS_PATH . 'config/settings.ini'
+    : APP_DIR . 'config/settings.ini';
 if (!file_exists($configFile))
     throw new Exception("Config file $configFile does not exists");
 $config = new Ini($configFile);
