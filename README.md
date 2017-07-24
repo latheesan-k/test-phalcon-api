@@ -1,5 +1,14 @@
 # Test Phalcon API
-Test api service built on phalcon php framework v3.
+Test api service built on phalcon php framework v3. This application creates an API and exposes the three following endpoints:
+
+* `GET /api/v1/files` List
+* `GET /api/v1/files/1` Info
+* `POST /api/v1/files` Create
+
+There are additional routes defined also:
+
+* `GET /public/docs/html` Documentation
+* `GET /download/filename.xlsx` Download
 
 ## Get Started
 
@@ -72,6 +81,20 @@ Here is how you can quickly setup a vhost entry for your apache2 to serve this p
 
 * Don't forget to enable `mod_rewrite` in your apache2 server
 
+#### 5. Test your api
+
+> API documentation can be read by visiting [http://test-phalcon-api.local/api/v1/files][8]
+
+> GET http://test-phalcon-api.local/api/v1/files - Returns a list of uploaded files
+
+> GET http://test-phalcon-api.local/api/v1/files/1 - View single uploaded file info
+
+> POST http://test-phalcon-api.local/api/v1/files - Upload a new file
+
+> GET http://test-phalcon-api.local/download/filename.xlsx - Download an uploaded file.
+
+See api [docs][8] for more detail.
+
 ### How to run the tests
 
 #### 1. Create & configure application settings
@@ -118,4 +141,4 @@ http://test-phalcon-api.local/public/docs/html/
 [5]: http://codeception.com/
 [6]: https://github.com/PHPOffice/PHPExcel/
 [7]: https://nodejs.org/en/
-
+[8]: http://test-phalcon-api.local/api/v1/files
