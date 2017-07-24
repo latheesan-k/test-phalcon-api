@@ -1,8 +1,7 @@
 [app]
 debug = true
 timezone = Europe/london
-session_lifetime = 3600
-valid_filename_regex = /^[a-zA-Z0-9\.\- ]+$/
+valid_filename_regex = /^[a-zA-Z0-9\.\-\_ ]+$/
 
 [database]
 adapter = mysql
