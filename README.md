@@ -83,7 +83,7 @@ Here is how you can quickly setup a vhost entry for your apache2 to serve this p
 
 #### 5. Test your api
 
-> API documentation can be read by visiting [http://test-phalcon-api.local/api/v1/files][8]
+> API documentation can be read by visiting [http://test-phalcon-api.local/public/docs/html/][8]
 
 > GET http://test-phalcon-api.local/api/v1/files - Returns a list of uploaded files
 
@@ -141,4 +141,4 @@ http://test-phalcon-api.local/public/docs/html/
 [5]: http://codeception.com/
 [6]: https://github.com/PHPOffice/PHPExcel/
 [7]: https://nodejs.org/en/
-[8]: http://test-phalcon-api.local/api/v1/files
+[8]: http://test-phalcon-api.local/public/docs/html/
