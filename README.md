@@ -99,6 +99,7 @@ sh run_tests.sh
 ```
 
 ### How to build docs
+
 _Requites NodeJS and NPM installed._
 
 1. Install `npm install apidoc -g`

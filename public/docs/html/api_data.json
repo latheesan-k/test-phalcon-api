@@ -90,7 +90,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 Created\n{\n    \"id\":\"1\",\n    \"original_filename\":\"test.csv\",\n    \"new_filename\":\"test.xls\",\n    \"filesize\":{\n        \"bytes\":\"8281\",\n        \"formatted\":\"8.09KB\"\n    },\n    \"download_link\":\"http://app.local/download/test.xls\",\n    \"date_created\":\"2017-07-22\"\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"id\":\"1\",\n    \"original_filename\":\"test.csv\",\n    \"new_filename\":\"test.xls\",\n    \"filesize\":{\n        \"bytes\":\"8281\",\n        \"formatted\":\"8.09KB\"\n    },\n    \"download_link\":\"http://test-phalcon-api.local/download/test.xls\",\n    \"date_created\":\"2017-07-22\"\n}",
           "type": "json"
         }
       ]
@@ -202,7 +202,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n    \"id\":\"1\",\n    \"original_filename\":\"test.csv\",\n    \"new_filename\":\"test.xls\",\n    \"filesize\":{\n        \"bytes\":\"8281\",\n        \"formatted\":\"8.09KB\"\n    },\n    \"download_link\":\"http://app.local/download/test.xls\",\n    \"date_created\":\"2017-07-22\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"id\":\"1\",\n    \"original_filename\":\"test.csv\",\n    \"new_filename\":\"test.xls\",\n    \"filesize\":{\n        \"bytes\":\"8281\",\n        \"formatted\":\"8.09KB\"\n    },\n    \"download_link\":\"http://test-phalcon-api.local/download/test.xls\",\n    \"date_created\":\"2017-07-22\"\n}",
           "type": "json"
         }
       ]
@@ -315,7 +315,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[\n    {\n        \"id\":\"1\",\n        \"original_filename\":\"test.csv\",\n        \"new_filename\":\"test.xls\",\n        \"filesize\":{\n            \"bytes\":\"8281\",\n            \"formatted\":\"8.09KB\"\n        },\n        \"download_link\":\"http://app.local/download/test.xls\",\n        \"date_created\":\"2017-07-22\"\n    }\n]",
+          "content": "HTTP/1.1 200 OK\n[\n    {\n        \"id\":\"1\",\n        \"original_filename\":\"test.csv\",\n        \"new_filename\":\"test.xls\",\n        \"filesize\":{\n            \"bytes\":\"8281\",\n            \"formatted\":\"8.09KB\"\n        },\n        \"download_link\":\"http://test-phalcon-api.local/download/test.xls\",\n        \"date_created\":\"2017-07-22\"\n    }\n]",
           "type": "json"
         }
       ]

@@ -24,7 +24,7 @@
  *                 "bytes":"8281",
  *                 "formatted":"8.09KB"
  *             },
- *             "download_link":"http://app.local/download/test.xls",
+ *             "download_link":"http://test-phalcon-api.local/download/test.xls",
  *             "date_created":"2017-07-22"
  *         }
  *     ]
