@@ -1,4 +1,6 @@
 .idea/
 vendor/
-app/config/settings.ini
 composer.lock
+app/config/settings.ini
+tests/_config/settings.ini
+tests/_support/_generated

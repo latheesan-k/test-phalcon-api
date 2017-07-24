@@ -1,0 +1,27 @@
+[app]
+debug = true
+timezone = Europe/london
+session_lifetime = 3600
+valid_filename_regex = /^[a-zA-Z0-9\.\- ]+$/
+
+[database]
+adapter = mysql
+host = localhost
+port = 3306
+username = test-phalcon-api
+password = 123456
+dbname = test-phalcon-api
+
+[cache]
+frontend_dapter = data
+backend_adapter = file
+lifetime = 3600
+prefix = tpa_
+
+[logger]
+adapter = file
+date_format = d-m-y
+
+[csv]
+delimiter = ,
+enclosure = "

@@ -13,11 +13,18 @@ use Phalcon\Cache\Backend\Factory as BackendCache;
 // Record application start time
 $start = microtime(true);
 
+// Determine if we are in codeception test mode
+$isTest = defined('TESTS_PATH');
+
 // Define application directory globally
-define('APP_DIR', getcwd() . '/../app/');
+define('APP_DIR', $isTest
+    ? TESTS_PATH . '../app/'
+    : getcwd() . '/../app/');
 
 // Attempt to load application configuration
-$configFile = APP_DIR . 'config/settings.ini';
+$configFile = $isTest
+    ? APP_DIR . 'config/settings.ini'
+    : TESTS_PATH . 'config/settings.ini';
 if (!file_exists($configFile))
     throw new Exception("Config file $configFile does not exists");
 $config = new Ini($configFile);
